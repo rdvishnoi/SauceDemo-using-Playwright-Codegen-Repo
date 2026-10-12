@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environments
+venv/
+.venv/
+.env/
+
+# Pytest
+.pytest_cache/
+
+# Playwright
+playwright-report/
+test-results/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# SSH keys (security)
+*.pem
+*.key
+*.pub
