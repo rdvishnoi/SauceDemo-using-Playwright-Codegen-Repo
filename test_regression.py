@@ -9,7 +9,11 @@ def test_regression_run(page: Page):
     page.locator("[data-test='username']").fill("standard_user")
     page.locator("[data-test='password']").fill("secret_sauce")
     page.locator("[data-test='login-button']").click()
-    
+
+    # wait for inventory page and cart link to appear
+    page.wait_for_url("**/inventory.html", timeout=5000)
+    page.wait_for_selector(".shopping_cart_link", state="visible", timeout=5000)
+
     # ASSERTION 1: Check login successful
     assert page.locator(".shopping_cart_link").is_visible(), "Login Failed!"
     print("Success: Logged in successfully!")
