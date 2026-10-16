@@ -19,7 +19,7 @@ def test_regression_run(page: Page):
     page.locator(".shopping_cart_link").click()
     
     # 4. Checkout Click
-    page.locator("[data-test='checkoutt']").click()
+    page.locator("[data-test='checkout']").click()
     
     # ASSERTION 2: Verify reached Checkout Page
     assert "checkout-step-one" in page.url, "Not on Checkout Page!"
