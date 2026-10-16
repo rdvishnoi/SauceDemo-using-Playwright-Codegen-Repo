@@ -6,7 +6,7 @@ def test_regression_run(page: Page):
     page.goto("https://www.saucedemo.com")
     
     # 2. Login Flow
-    page.locator("[data-test='username']").fill("standard_use")
+    page.locator("[data-test='username']").fill("standard_user")
     page.locator("[data-test='password']").fill("secret_sauce")
     page.locator("[data-test='login-button']").click()
     
@@ -19,7 +19,7 @@ def test_regression_run(page: Page):
     page.locator(".shopping_cart_link").click()
     
     # 4. Checkout Click
-    page.locator("[data-test='checkout']").click()
+    page.locator("[data-test='checkoutt']").click()
     
     # ASSERTION 2: Verify reached Checkout Page
     assert "checkout-step-one" in page.url, "Not on Checkout Page!"
