@@ -6,7 +6,7 @@ def test_regression_run(page: Page):
     page.goto("https://www.saucedemo.com")
     
     # 2. Login Flow
-    page.locator("[data-test='username']").fill("standard_user")
+    page.locator("[data-test='username']").fill("standard_use")
     page.locator("[data-test='password']").fill("secret_sauce")
     page.locator("[data-test='login-button']").click()
     
