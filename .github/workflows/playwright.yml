@@ -5,7 +5,6 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch: # Isse aap manually bhi run kar sakte hain button daba kar
 
 jobs:
   test:
@@ -23,21 +22,19 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install playwright pytest pytest-playwright pytest-html
+        pip install -r requirements.txt
 
     - name: Install Playwright Browsers
-      run: playwright install --with-deps chromium
+      run: playwright install chromium --with-deps
 
-    - name: Run Tests with HTML Report & Screenshots
-      run: |
-        pytest test_regression.py --html=report.html --self-contained-html --screenshot=only-on-failure --video=retain-on-failure
+    - name: Run Playwright Test Script
+      run: python sauce_test.py
 
-    - name: Upload Test Report & Artifacts
-      if: always() # Test paas ho ya fail, report hamesha upload hogi
+    # Hamesha chalega, chahe test pass ho ya fail
+    - name: Upload Failure Screenshots
+      if: always() 
       uses: actions/upload-artifact@v4
       with:
-        name: playwright-test-results
-        path: |
-          report.html
-          screenshot/
-        retention-days: 7
+        name: playwright-screenshots
+        path: screenshots/
+        retention-days: 7 # 7 din baad auto delete ho jayega

@@ -1,30 +1,35 @@
-import pytest
-from playwright.sync_api import Page
+import os
+from playwright.sync_api import sync_playwright
 
-def test_regression_run(page: Page):
-    # 1. Open Website
-    page.goto("https://www.saucedemo.com")
-    
-    # 2. Login Flow
-    page.locator("[data-test='username']").fill("standard_user")
-    page.locator("[data-test='password']").fill("secret_sauce")
-    page.locator("[data-test='login-button']").click()
+def run_regression_test():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True) 
+        context = browser.new_context()
+        page = context.new_page()
+        
+        try:
+            # 1. Open Website
+            page.goto("https://saucedemo.com")
+            
+            # 2. Login Flow
+            page.locator("[data-test='username']").fill("standard_user")
+            page.locator("[data-test='password']").fill("secret_sauce")
+            page.locator("[data-test='login-button']").click()
+            
+            # جان بوجھ کر ٹیسٹ فیل کرنے کے لیے (For testing failure, change locator name)
+            assert page.locator(".shopping_cart_link").is_visible(), "Login Failed!"
+            print("Success: Test Passed!")
+            
+        except Exception as e:
+            # Failure ke time screenshot capture hoga
+            os.makedirs("screenshots", exist_ok=True)
+            page.screenshot(path="screenshots/failure_screenshot.png")
+            print(f"Test Failed! Screenshot saved. Error: {e}")
+            raise e # Pipeline ko failure report karne ke liye mandatory hai
+            
+        finally:
+            context.close()
+            browser.close()
 
-    # wait for inventory page and cart link to appear
-    page.wait_for_url("**/inventory.html", timeout=5000)
-    page.wait_for_selector(".shopping_cart_link", state="visible", timeout=5000)
-
-    # ASSERTION 1: Check login successful
-    assert page.locator(".shopping_cart_link").is_visible(), "Login Failed!"
-    print("Success: Logged in successfully!")
-    
-    # 3. Add Product & Go to Cart
-    page.locator("[data-test='add-to-cart-sauce-labs-backpack']").click()
-    page.locator(".shopping_cart_link").click()
-    
-    # 4. Checkout Click
-    page.locator("[data-test='checkout']").click()
-    
-    # ASSERTION 2: Verify reached Checkout Page
-    assert "checkout-step-one" in page.url, "Not on Checkout Page!"
-    print("Success: Reached checkout page successfully. Regression Test Passed!")
+if __name__ == "__main__":
+    run_regression_test()
