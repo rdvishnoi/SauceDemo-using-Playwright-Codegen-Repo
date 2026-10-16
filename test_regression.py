@@ -9,17 +9,17 @@ def run_regression_test():
         
         try:
             # 1. Open Website
-            page.goto("https://saucedemo.com")
-            
-            # 2. Login Flow
-            page.locator("[data-test='username']").fill("standard_user")
-            page.locator("[data-test='password']").fill("secret_sauce")
-            page.locator("[data-test='login-button']").click()
-            
-            # For testing failure, change locator name
-            assert page.locator(".shopping_cart_link").is_visible(), "Login Failed!"
-            print("Success: Test Passed!")
-            
+	    page.goto("https://www.saucedemo.com")  # use explicit www
+
+	    # 2. Login Flow
+	    page.locator("[data-test='username']").fill("standard_user")
+	    page.locator("[data-test='password']").fill("secret_sauce")
+	    page.locator("[data-test='login-button']").click()
+
+	    # Wait for the shopping cart link to appear (avoid immediate assert)
+	    page.wait_for_selector(".shopping_cart_link", timeout=5000)
+	    assert page.locator(".shopping_cart_link").is_visible(), "Login Failed!"
+	    print("Success: Test Passed!")
         except Exception as e:
             # Failure ke time screenshot capture hoga
             os.makedirs("screenshots", exist_ok=True)
