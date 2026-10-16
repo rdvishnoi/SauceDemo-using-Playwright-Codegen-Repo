@@ -16,7 +16,7 @@ def run_regression_test():
             page.locator("[data-test='password']").fill("secret_sauce")
             page.locator("[data-test='login-button']").click()
             
-            # جان بوجھ کر ٹیسٹ فیل کرنے کے لیے (For testing failure, change locator name)
+            # For testing failure, change locator name
             assert page.locator(".shopping_cart_link").is_visible(), "Login Failed!"
             print("Success: Test Passed!")
             

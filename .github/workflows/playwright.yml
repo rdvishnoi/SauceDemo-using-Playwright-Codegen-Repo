@@ -28,7 +28,7 @@ jobs:
       run: playwright install chromium --with-deps
 
     - name: Run Playwright Test Script
-      run: python sauce_test.py
+      run: python test_regression.py
 
     # Hamesha chalega, chahe test pass ho ya fail
     - name: Upload Failure Screenshots
